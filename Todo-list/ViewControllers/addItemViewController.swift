@@ -20,7 +20,7 @@ class AddItemViewController : FormViewController {
     var todoTitle = ""
     var todoDescription = ""
     var todoCategory  = ""
-    var duedate = Date()
+    var todoDuedate = Date()
     var delegate : CanReceive?
     
 //    var todoItem : ToDo?
@@ -72,7 +72,7 @@ class AddItemViewController : FormViewController {
                 $0.value = Date()
                 $0.onChange { [unowned self] row in //5
                     if let date = row.value {
-                        self.duedate = date
+                        self.todoDuedate = date
                     }
 //                    else {
 //                        self.duedate = Date()
@@ -98,11 +98,43 @@ class AddItemViewController : FormViewController {
     
     //Handle saving and passing data back
     @objc func buttonAction(sender: UIButton!) {
-        let todoItem = ToDo(title: self.todoTitle, description: self.todoDescription, category : self.todoCategory, date: self.duedate)
+       
+        if self.todoTitle == "" {
+            let alert = UIAlertController(title: "Missing infomation", message: "TITLE REQUIRED", preferredStyle: .alert)
+            let action = UIAlertAction(title: "Cancel", style: .default) { (action) in
+                print("Sucess")
+            }
+            alert.view.tintColor = .red
+            alert.addAction(action)
+            present(alert, animated: true, completion: nil)
+        }
+            
+        else if self.todoDescription == "" {
+            let alert = UIAlertController(title: "Missing infomation", message: "DESCRIPTION REQUIRED", preferredStyle: .alert)
+            alert.view.tintColor = .red
+            let action = UIAlertAction(title: "Cancel", style: .default) { (action) in
+                print("Sucess")
+            }
+            alert.addAction(action)
+            present(alert, animated: true, completion: nil)
+        }
+            
+        else if self.todoCategory == "" {
+            let alert = UIAlertController(title: "Missing infomation", message: "CATEGORY REQUIRED", preferredStyle: .alert)
+            let action = UIAlertAction(title: "Cancel", style: .default) { (action) in
+                print("Sucess")
+            }
+            alert.view.tintColor = .red
+            alert.addAction(action)
+            present(alert, animated: true, completion: nil)
+        }
+        else {
+        let todoItem = ToDo(title: self.todoTitle, desc: self.todoDescription, cate: self.todoCategory, dueDate: self.todoDuedate)
         delegate?.dataReceived(data: todoItem)
         self.dismiss(animated: true, completion: nil)
-        print(type(of :self.duedate))
-        print(self.duedate)
+//        print(type(of :self.duedate))
+//        print(self.duedate)
         print("Button tapped")
+        }
     }
 }

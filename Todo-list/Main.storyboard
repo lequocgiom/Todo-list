@@ -19,14 +19,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="bNp-zG-ID5">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="406"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="403"/>
                             </imageView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="JjU-cw-Mge">
-                                <rect key="frame" x="0.0" y="446" width="414" height="450"/>
+                                <rect key="frame" x="0.0" y="448" width="414" height="448"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="450" id="ORC-yX-1sj"/>
-                                </constraints>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="CellId" id="R5e-Gq-aPc" customClass="CustomTableViewCell" customModule="Todo_list" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="414" height="44"/>
@@ -42,31 +39,68 @@
                                     <outlet property="delegate" destination="Hgo-gn-MeQ" id="ab4-K5-YED"/>
                                 </connections>
                             </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CDA-15-pp2" customClass="RoundButton" customModule="Todo_list" customModuleProvider="target">
-                                <rect key="frame" x="157" y="377" width="100" height="50"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="29"/>
-                                <state key="normal" title="Button"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" restorationIdentifier="timeLabel" text="08:47" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T2Z-k3-Wer">
+                                <rect key="frame" x="153.5" y="176" width="107" height="51"/>
+                                <fontDescription key="fontDescription" type="system" weight="thin" pointSize="42"/>
+                                <color key="textColor" red="0.9259002221" green="0.9259002221" blue="0.9259002221" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" restorationIdentifier="dateLabel" text="wed, 25 May, 2018" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MnH-DQ-4ZR">
+                                <rect key="frame" x="127" y="235" width="160" height="24"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="24" id="PZL-KL-Yxv"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                <color key="textColor" red="0.9259002221" green="0.9259002221" blue="0.9259002221" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CDA-15-pp2" customClass="RoundButton">
+                                <rect key="frame" x="124" y="373" width="166" height="60"/>
+                                <color key="backgroundColor" red="0.3439328670501709" green="0.51147639751434326" blue="0.73728543519973755" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="tmg-7l-Uy7"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="light" pointSize="20"/>
+                                <state key="normal" title="Add activity">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="30"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="addButtonPressed:" destination="Hgo-gn-MeQ" eventType="touchUpInside" id="Wzu-WF-7hI"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="MnH-DQ-4ZR" firstAttribute="top" secondItem="T2Z-k3-Wer" secondAttribute="bottom" constant="8" symbolic="YES" id="DUw-q1-Mmw"/>
+                            <constraint firstItem="bNp-zG-ID5" firstAttribute="height" secondItem="BYS-0Z-dvA" secondAttribute="height" multiplier="0.45" id="HTZ-E2-5E6"/>
                             <constraint firstItem="JjU-cw-Mge" firstAttribute="trailing" secondItem="GF4-7M-rA4" secondAttribute="trailing" id="Jer-yp-jSk"/>
+                            <constraint firstItem="CDA-15-pp2" firstAttribute="width" secondItem="bNp-zG-ID5" secondAttribute="width" multiplier="0.4" id="KtA-um-5l8"/>
                             <constraint firstItem="JjU-cw-Mge" firstAttribute="leading" secondItem="GF4-7M-rA4" secondAttribute="leading" id="Qak-cW-yPQ"/>
-                            <constraint firstItem="JjU-cw-Mge" firstAttribute="top" secondItem="bNp-zG-ID5" secondAttribute="bottom" constant="40" id="SAI-iL-HpZ"/>
                             <constraint firstItem="JjU-cw-Mge" firstAttribute="leading" secondItem="bNp-zG-ID5" secondAttribute="leading" id="YQP-x8-o3H"/>
-                            <constraint firstAttribute="bottom" secondItem="JjU-cw-Mge" secondAttribute="bottom" id="aVg-ef-QQj"/>
                             <constraint firstAttribute="bottom" secondItem="JjU-cw-Mge" secondAttribute="bottom" id="avu-g9-nAX"/>
                             <constraint firstItem="bNp-zG-ID5" firstAttribute="top" secondItem="BYS-0Z-dvA" secondAttribute="top" id="bBN-JM-2zi"/>
+                            <constraint firstItem="CDA-15-pp2" firstAttribute="centerY" secondItem="bNp-zG-ID5" secondAttribute="centerY" multiplier="2" id="cwG-Jh-mjO"/>
                             <constraint firstItem="JjU-cw-Mge" firstAttribute="trailing" secondItem="bNp-zG-ID5" secondAttribute="trailing" id="dzn-9r-Be1"/>
                             <constraint firstItem="JjU-cw-Mge" firstAttribute="leading" secondItem="BYS-0Z-dvA" secondAttribute="leading" id="e9q-cG-g0l"/>
+                            <constraint firstItem="JjU-cw-Mge" firstAttribute="height" secondItem="BYS-0Z-dvA" secondAttribute="height" multiplier="0.5" id="fz4-UA-Neg"/>
+                            <constraint firstItem="CDA-15-pp2" firstAttribute="centerX" secondItem="bNp-zG-ID5" secondAttribute="centerX" id="g0P-tT-J6h"/>
+                            <constraint firstItem="MnH-DQ-4ZR" firstAttribute="centerX" secondItem="bNp-zG-ID5" secondAttribute="centerX" id="oHi-Wh-IxZ"/>
+                            <constraint firstItem="T2Z-k3-Wer" firstAttribute="centerX" secondItem="bNp-zG-ID5" secondAttribute="centerX" id="rc5-qq-WZ1"/>
                             <constraint firstAttribute="trailing" secondItem="JjU-cw-Mge" secondAttribute="trailing" id="wYY-V5-ISg"/>
+                            <constraint firstItem="T2Z-k3-Wer" firstAttribute="centerY" secondItem="bNp-zG-ID5" secondAttribute="centerY" id="xig-iS-Sda"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="GF4-7M-rA4"/>
                     </view>
                     <connections>
                         <outlet property="ImageTop" destination="bNp-zG-ID5" id="95v-K9-xqA"/>
+                        <outlet property="dateLabel" destination="MnH-DQ-4ZR" id="UJv-Va-rbp"/>
                         <outlet property="tableView" destination="JjU-cw-Mge" id="7ag-bk-tzC"/>
+                        <outlet property="timeLabel" destination="T2Z-k3-Wer" id="pwe-xf-Gwr"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XzO-uC-P7o" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -7,13 +7,17 @@
 //
 
 import UIKit
+import RealmSwift
 
 let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
 
 
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CanReceive {
     
-    var todoList = [ToDo]()
+    let realm = try! Realm()
+    
+    var todoList : Results<ToDo>!
+    
     let cellId = "CellId"
     var timer = Timer()
 //    let test = ["Row1", "Row2", "Row3"]
@@ -30,9 +34,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        loadTodoData()
         //append first todo item
-        todoList.append(ToDo(title: "Work Out", description: "Run 10000 steps", category: "Personal 😄", date: Date()))
+//        todoList.append(ToDo(title: "Work Out", description: "Run 10000 steps", category: "Personal 😄", date: Date()))
+//        let firstTodo = ToDo(title: "Work Out", desc: "Run 10000 steps", cate: "Personal 😄", dueDate: Date())
+//        save(todo: firstTodo)
         
         self.tableView.register(UINib(nibName: "CustomTableViewCell", bundle: nil), forCellReuseIdentifier: cellId)
         configureTableView()
@@ -45,42 +51,47 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         dateLabel.text = DateFormatter.localizedString(from: Date(), dateStyle: .long, timeStyle: .none)
         timeLabel.text = DateFormatter.localizedString(from: Date(), dateStyle: .none, timeStyle: .short)
     }
-    //data source method
+    //MARK: data source method
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return todoList.count
+        return todoList?.count ?? 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! CustomTableViewCell
-        cell.categoryLabel?.text = todoList[indexPath.row].title
-        cell.descriptionLabel.text = todoList[indexPath.row].description
-        var imageCategory = ""
-        switch todoList[indexPath.row].category {
-        case "Personal 😄":
-            imageCategory = "Personal"
-            cell.uiButton.backgroundColor =  UIColor(hexString: "#34495e")
-        case "Home 🏠":
-            imageCategory = "Home"
-            cell.uiButton.backgroundColor =  UIColor(hexString: "#1abc9c")
-        case "Work 💼":
-            imageCategory = "Work"
-            cell.uiButton.backgroundColor =  UIColor(hexString: "#e74c3c")
-        case "Play 🎮":
-            imageCategory = "Play"
-            cell.uiButton.backgroundColor =  UIColor(hexString: "#f1c40f")
-        case "Health 🏋🏻‍♀️":
-            imageCategory = "Health"
-            cell.uiButton.backgroundColor =  UIColor(hexString: "#1e3799")
-        case "Other":
-            imageCategory = "Other"
-        default:
-            break
+        if let item = todoList?[indexPath.row] {
+            cell.categoryLabel?.text = todoList[indexPath.row].title
+            cell.descriptionLabel.text = todoList[indexPath.row].desc
+            cell.imageCategory?.image = UIImage(named: item.imageCate)
+            cell.uiButton.backgroundColor = UIColor(hexString: item.hexColor)
+            let df = DateFormatter()
+            df.dateFormat = "yyyy-MM-dd"
+            cell.timeLabel.text = df.string(from: item.dueDate)
         }
-        cell.imageCategory?.image = UIImage(named: imageCategory)
-        let df = DateFormatter()
-        df.dateFormat = "yyyy-MM-dd"
-        cell.timeLabel.text = df.string(from: todoList[indexPath.row].date)
+        
+//        var imageCategory = ""
+//        switch todoList[indexPath.row].category {
+//        case "Personal 😄":
+//            imageCategory = "Personal"
+//            cell.uiButton.backgroundColor =  UIColor(hexString: "#34495e")
+//        case "Home 🏠":
+//            imageCategory = "Home"
+//            cell.uiButton.backgroundColor =  UIColor(hexString: "#1abc9c")
+//        case "Work 💼":
+//            imageCategory = "Work"
+//            cell.uiButton.backgroundColor =  UIColor(hexString: "#e74c3c")
+//        case "Play 🎮":
+//            imageCategory = "Play"
+//            cell.uiButton.backgroundColor =  UIColor(hexString: "#f1c40f")
+//        case "Health 🏋🏻‍♀️":
+//            imageCategory = "Health"
+//            cell.uiButton.backgroundColor =  UIColor(hexString: "#1e3799")
+//        case "Other":
+//            imageCategory = "Other"
+//        default:
+//            break
+//        }
+        
         
         return cell
     }
@@ -105,7 +116,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func dataReceived(data: ToDo) {
-        todoList.append(data)
+        save(todo: data)
         tableView.reloadData()
         return
     }
@@ -119,7 +130,17 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         switch editingStyle {
         case .delete:
-            todoList.remove(at: indexPath.row)
+            if let todo = self.todoList?[indexPath.row] {
+                do {
+                    try self.realm.write {
+                        self.realm.delete(todo)
+                    }
+                }
+                catch {
+                    print("Error deleting category, \(error)")
+                }
+            
+        }
             tableView.reloadData()
             
         default:
@@ -134,6 +155,29 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
         deleteButton.backgroundColor = UIColor(hexString: "#f8c291")
         return [deleteButton]
+    }
+    //MARK save and load item
+    
+    func save(todo : ToDo) {
+        do {
+            try realm.write {
+            realm.add(todo)
+            }
+        }
+        
+        catch{
+        print("Error saving category, \(error)")
+        }
+        
+        tableView.reloadData()
+    }
+    
+    func loadTodoData() {
+        
+        todoList = realm.objects(ToDo.self)
+        
+        tableView.reloadData()
+        
     }
 }
 
